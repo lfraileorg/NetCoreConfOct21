@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Diagnostics;
+using WebClient.Diagnotics;
 
 namespace WebClient
 {
@@ -21,12 +24,21 @@ namespace WebClient
         {
             services.AddHttpClient();
             services.AddControllersWithViews();
-            
-        
 
+            services.AddOpenTelemetryTracing(builder =>
+            {
+                builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient", serviceVersion: "ver1.0"))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddSource("OrdersModule")
+                    .AddJaegerExporter();
+            });
+
+            services.AddSingleton<WebClientDiagnostics>();
+            
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DiagnosticListener listener)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

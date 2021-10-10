@@ -28,6 +28,15 @@ namespace SomeService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddOpenTelemetryTracing(builder =>
+            {
+                builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("SomeService", serviceVersion: "ver1.0"))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddJaegerExporter();
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
