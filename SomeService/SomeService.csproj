@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/26da47a8-c28d-4564-ae8e-8ba88e995a0a/resourceGroups/DistributedTracingDemosRG/providers/microsoft.insights/components/distributedtracing</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.0.0-beta.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.1.0" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc7" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc7" />

@@ -28,7 +28,7 @@ namespace WebClient.Controllers
                 activity?.AddBaggage("bag1", "value bag1");
 
                 var httpClient = _httpClientFactory.CreateClient();
-                var response = await httpClient.GetAsync("http://localhost:33018/WeatherForecast");
+                var response = await httpClient.GetAsync("http://localhost:5050/WeatherForecast");
             }
 
             return View();

@@ -1,3 +1,4 @@
+using Azure.Monitor.OpenTelemetry.Exporter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,12 +31,17 @@ namespace WebClient
                 builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient", serviceVersion: "ver1.0"))
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddSource("OrdersModule")
+                    .AddSource("HomeModule")
+                    .AddAzureMonitorTraceExporter(o =>
+                    {
+                        o.ConnectionString = Configuration["APPINSIGHTS_CONNECTIONSTRING"];
+                    })
                     .AddJaegerExporter();
             });
 
             services.AddSingleton<WebClientDiagnostics>();
-            
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

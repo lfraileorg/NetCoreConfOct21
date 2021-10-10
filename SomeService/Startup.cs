@@ -1,3 +1,4 @@
+using Azure.Monitor.OpenTelemetry.Exporter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +35,14 @@ namespace SomeService
                 builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("SomeService", serviceVersion: "ver1.0"))
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
+                    .AddSource("WeatherService")
+                    .AddAzureMonitorTraceExporter(o =>
+                    {
+                        o.ConnectionString = Configuration["APPINSIGHTS_CONNECTIONSTRING"];
+                    })
                     .AddJaegerExporter();
             });
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
 
         }
 

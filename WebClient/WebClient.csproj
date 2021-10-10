@@ -1,10 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/26da47a8-c28d-4564-ae8e-8ba88e995a0a/resourceGroups/DistributedTracingDemosRG/providers/microsoft.insights/components/distributedtracing</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.0.0-beta.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="OpenTelemetry" Version="1.1.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.1.0" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc7" />
@@ -12,6 +15,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc7" />
     <PackageReference Include="Serilog.Enrichers.Span" Version="1.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="7.1.0" />
   </ItemGroup>
