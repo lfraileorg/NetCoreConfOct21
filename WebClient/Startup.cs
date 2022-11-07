@@ -40,7 +40,7 @@ namespace WebClient
             });
 
             services.AddSingleton<WebClientDiagnostics>();
-            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+            services.AddApplicationInsightsTelemetry();
 
         }
 
