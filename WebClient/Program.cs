@@ -14,9 +14,9 @@ namespace WebClient
             // move this to application configuration file!
 
             Serilog.Log.Logger = new LoggerConfiguration()
-                .WriteTo.GrafanaLoki("http://localhost:3100")//, outputTemplate: @"[{Timestamp:o} {Level:u3}] {TraceId:l} {Message:lj}{NewLine}{Exception}")
-                //.WriteTo.Console(Serilog.Events.LogEventLevel.Information)
-                // .WriteTo.ApplicationInsights("APP INSIGHTS KEY (Only key)", TelemetryConverter.Traces, Serilog.Events.LogEventLevel.Warning)
+                .WriteTo.GrafanaLoki("http://localhost:3100", outputTemplate: @"[{Timestamp:o} {Level:u3}] {TraceId:l} {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Console(Serilog.Events.LogEventLevel.Information)
+                 //.WriteTo.ApplicationInsights("APP INSIGHTS KEY (Only key)", TelemetryConverter.Traces, Serilog.Events.LogEventLevel.Warning)
                 .Enrich.FromLogContext()
                 .Enrich.WithSpan()
                 .CreateLogger();

@@ -13,10 +13,13 @@ namespace WebClient.Controllers
     {
         private WebClientDiagnostics _diagnostics;
         private IHttpClientFactory _httpClientFactory;
-        public HomeController(WebClientDiagnostics diagnostics,IHttpClientFactory httpClientFactoryu)
+        private readonly WebClientMetrics _otelMetrics;
+
+        public HomeController(WebClientDiagnostics diagnostics,IHttpClientFactory httpClientFactoryu, WebClientMetrics otelMetrics)
         {
             _diagnostics = diagnostics;
             _httpClientFactory = httpClientFactoryu;
+            _otelMetrics = otelMetrics;
         }
 
         public async Task<IActionResult> Index()
@@ -29,6 +32,7 @@ namespace WebClient.Controllers
 
                 var httpClient = _httpClientFactory.CreateClient();
                 var response = await httpClient.GetAsync("http://localhost:5050/WeatherForecast");
+                _otelMetrics.AddWeatherCall();
             }
 
             return View();

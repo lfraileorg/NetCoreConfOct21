@@ -40,9 +40,10 @@ namespace SomeService
                     {
                         o.ConnectionString = Configuration["APPINSIGHTS_CONNECTIONSTRING"];
                     })
-                    .AddJaegerExporter();
+                    .AddJaegerExporter()
+                    ;
             });
-            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+            services.AddApplicationInsightsTelemetry();
 
         }
 

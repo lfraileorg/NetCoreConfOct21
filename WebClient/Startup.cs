@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using System.Diagnostics;
 using WebClient.Diagnotics;
 
 namespace WebClient
@@ -37,9 +37,18 @@ namespace WebClient
                         o.ConnectionString = Configuration["APPINSIGHTS_CONNECTIONSTRING"];
                     })
                     .AddJaegerExporter();
+
             });
 
+            services.AddOpenTelemetryMetrics(options =>
+            {
+                options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient", serviceVersion: "ver1.0"))
+                .AddHttpClientInstrumentation()
+                .AddAspNetCoreInstrumentation()
+                .AddPrometheusExporter();
+            });
             services.AddSingleton<WebClientDiagnostics>();
+            services.AddSingleton<WebClientMetrics>();
             services.AddApplicationInsightsTelemetry();
 
         }
@@ -66,6 +75,7 @@ namespace WebClient
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseOpenTelemetryPrometheusScrapingEndpoint();
         }
     }
 }
