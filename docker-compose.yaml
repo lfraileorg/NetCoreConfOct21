@@ -29,6 +29,9 @@ services:
       - 3000:3000
 
   prometheus: 
-    image: prom/prometheus:v2.38.0
+    build: 
+      context: ./prometheus
     ports:
       - 9090:9090
+    extra_hosts:
+        - "host.docker.internal:host-gateway"
