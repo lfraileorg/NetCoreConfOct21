@@ -8,6 +8,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using WebClient.Diagnotics;
+using OpenTelemetry.Instrumentation.Runtime;
 
 namespace WebClient
 {
@@ -43,6 +44,7 @@ namespace WebClient
             services.AddOpenTelemetryMetrics(options =>
             {
                 options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient", serviceVersion: "ver1.0"))
+                .AddRuntimeInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
                 .AddPrometheusExporter();
