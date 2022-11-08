@@ -43,7 +43,7 @@ namespace WebClient
 
             services.AddOpenTelemetryMetrics(options =>
             {
-                options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient", serviceVersion: "ver1.0"))
+                options.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WebClient"))
                 .AddRuntimeInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
