@@ -34,8 +34,9 @@ namespace SomeService.Controllers
             using (var activity = _activitySource.StartActivity("GetForecast"))
             {
                 _telemetryClient.TrackEvent("MyEvent");
-
                 activity.AddTag("weatherforecast", "value");
+                activity.AddEvent(new ActivityEvent("MyEventOtl"));
+
                 var rng = new Random();
                 return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {

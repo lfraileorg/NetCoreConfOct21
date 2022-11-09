@@ -1,26 +1,41 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Azure.Monitor.OpenTelemetry.Exporter;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
-namespace SomeService
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+
+services.AddControllers();
+
+services.AddOpenTelemetryTracing(telemetryBuilder =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
+    telemetryBuilder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("SomeService", serviceVersion: "ver1.0"))
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddSource("WeatherService")
+        .AddAzureMonitorTraceExporter(o =>
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            o.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+        })
+        .AddJaegerExporter()
+        ;
+});
+services.AddApplicationInsightsTelemetry();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
+app.Run();
