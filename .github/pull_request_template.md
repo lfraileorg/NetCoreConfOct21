@@ -1,7 +1,27 @@
-TL;DR: 
+<!-- markdownlint-disable MD041 -->
+TL;DR: <!-- Brief description of the pr -->
 
-# User Stories affected
+## User Stories affected
+<!--
+fixes AB#XXXX
+-->
 
-# Other Systems impacted
+## Other systems impacted
 
-# Security Revision needed
+<!--
+It can be things like:
+- repos:
+    - gateway
+    - api-docs
+
+or can be parts of the platform:
+- 
+-->
+
+## Security Revision needed
+
+- [] Yes
+- [] No
+<!--
+
+-->
